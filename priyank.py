@@ -25,7 +25,7 @@ def get_sections(sections):
 		empty_list.append(s.title)
 		section_list.append(empty_list)
 
-		findSubsections(s, section_number, section_list);
+		findSubsections(s, section_number, section_list)
 	return section_list	
 
 def addDict(output_list, count_animal, wiki_page):
@@ -43,24 +43,31 @@ def addDict(output_list, count_animal, wiki_page):
 
 pbar = tqdm(total = 383)
 count_animal = 1
+length = 0
 for animal in f.readlines():
-	print(animal)
+	# print(animal)
 	animal = animal.lower().strip("\n")
-	page_py = wiki_wiki.page(animal)
-	wiki_page= wk.WikipediaPage(title=animal)
-	summary_dic[count_animal] = wiki_page.summary
-	output_list = get_sections(page_py.sections)
-	# print(output_list)
-	addDict(output_list, count_animal,wiki_page)
-	count_animal = count_animal + 1
-	pbar.update(1)
-	# print(summary_dic)
+	try:
+		page_py = wiki_wiki.page(animal)
+		wiki_page= wk.WikipediaPage(title=animal)
+		# print(len(wiki_page.content.split()))
+		length += len(wiki_page.content.split())
+		# summary_dic[count_animal] = wiki_page.summary
+		# output_list = get_sections(page_py.sections)
+		# # print(output_list)
+		# addDict(output_list, count_animal,wiki_page)
+		# count_animal = count_animal + 1
+		pbar.update(1)
+		# print(summary_dic)
+	except:
+		pass
 pbar.close()
 
-with open("output_data.json","w") as f:
-	json.dump(dic,f)		   
+# with open("output_data.json","w") as f:
+# 	json.dump(dic,f)		   
 
-with open("output_summary.json","w") as e:
-	json.dump(summary_dic,e)	
+# with open("output_summary.json","w") as e:
+# 	json.dump(summary_dic,e)	
 
 
+print(length)
